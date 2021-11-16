@@ -4,4 +4,8 @@ import router from "./router";
 import store from "./store";
 import Button from "@/components/app/Button.vue";
 
-createApp(App).use(store).use(router).component('custom-btn', Button).mount("#app");
+createApp(App)
+  .use(store)
+  .use(router)
+  .component("custom-btn", Button)
+  .mount("#app");
