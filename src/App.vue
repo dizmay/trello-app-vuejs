@@ -10,6 +10,19 @@ import Header from "@/components/app/Header.vue";
 
 export default {
   components: { Header },
+  computed: {
+    error() {
+      return this.$store.getters.error;
+    },
+  },
+  watch: {
+    error(message) {
+      if (message) {
+        this.$toast.error(message);
+        this.$store.commit("clearError");
+      }
+    },
+  },
 };
 </script>
 

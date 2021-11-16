@@ -2,15 +2,15 @@ import axios from "axios";
 
 class AuthService {
   login(user) {
-    return axios.post(process.env.baseURL + "signin", user);
+    return axios.post(process.env.VUE_APP_BASE_URL + "signin", user);
   }
 
   register(user) {
-    return axios.post(process.env.baseURL + "signup", user);
+    return axios.post(process.env.VUE_APP_BASE_URL + "signup", user);
   }
 
   verify() {
-    return axios.get(process.env.baseURL + "verify");
+    return axios.get(process.env.VUE_APP_BASE_URL + "verify");
   }
 
   setAuthToken(token) {

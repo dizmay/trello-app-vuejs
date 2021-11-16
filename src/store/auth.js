@@ -8,12 +8,11 @@ export default {
     id: null,
     username: "",
     email: "",
-    isLoading: false,
   },
   actions: {
     async login({ commit }, userData) {
       try {
-        commit("toggleIsLoading");
+        commit("setIsLoading", true);
         const response = await authService.login(userData);
         const token = response.data.token;
         const user = jwt.decode(token);
@@ -22,11 +21,12 @@ export default {
         authService.setAuthToken(token);
         commit("setIsLogged", true);
       } catch (error) {
-        console.log(error, error.message);
+        console.log(error);
+        commit("setError", error.response.data.message);
         commit("clearUserData");
         commit("setIsLogged", false);
       } finally {
-        commit("toggleIsLoading");
+        commit("setIsLoading", false);
       }
     },
   },
@@ -43,9 +43,6 @@ export default {
       state.id = null;
       state.username = "";
       state.email = "";
-    },
-    toggleIsLoading(state) {
-      state.isLoading = !state.isLoading;
     },
   },
   getters: {

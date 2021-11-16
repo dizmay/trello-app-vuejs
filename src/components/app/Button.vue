@@ -1,5 +1,8 @@
 <template>
-  <button :class="['custom-btn', { 'dark-btn': dark }, { 'light-btn': light }]">
+  <button
+    :type="type || 'button'"
+    :class="['custom-btn', { 'dark-btn': dark }, { 'light-btn': light }]"
+  >
     {{ text }}
   </button>
 </template>
@@ -16,6 +19,9 @@ export default {
     },
     light: {
       type: Boolean,
+    },
+    type: {
+      type: String,
     },
   },
 };

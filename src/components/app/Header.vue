@@ -6,7 +6,9 @@
         <Avatar />
       </div>
       <div v-else>
-        <custom-btn text="Login" dark />
+        <router-link to="/login">
+          <custom-btn text="Login" dark />
+        </router-link>
         <custom-btn text="Register" light />
       </div>
     </div>
@@ -23,6 +25,11 @@ export default {
     };
   },
   components: { Avatar },
+  methods: {
+    test() {
+      this.$toast.open("test");
+    },
+  },
 };
 </script>
 
