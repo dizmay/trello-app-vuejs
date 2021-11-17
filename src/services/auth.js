@@ -9,10 +9,6 @@ class AuthService {
     return axios.post(process.env.VUE_APP_BASE_URL + "signup", user);
   }
 
-  verify() {
-    return axios.get(process.env.VUE_APP_BASE_URL + "verify");
-  }
-
   setAuthToken(token) {
     if (token) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;

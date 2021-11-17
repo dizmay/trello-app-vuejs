@@ -21,13 +21,55 @@ export default {
         authService.setAuthToken(token);
         commit("setIsLogged", true);
       } catch (error) {
-        console.log(error);
         commit("setError", error.response.data.message);
         commit("clearUserData");
         commit("setIsLogged", false);
       } finally {
         commit("setIsLoading", false);
       }
+    },
+    async register({ commit }, userData) {
+      try {
+        commit("setIsLoading", true);
+        const response = await authService.register(userData);
+        const token = response.data.token;
+        const user = jwt.decode(token);
+        commit("setCurrentUser", user);
+        localStorage.setItem("token", token);
+        authService.setAuthToken(token);
+        commit("setIsLogged", true);
+      } catch (error) {
+        commit("setError", error.response.data.message);
+        commit("clearUserData");
+        commit("setIsLogged", false);
+      } finally {
+        commit("setIsLoading", false);
+      }
+    },
+    checkCurrentUser({ commit }) {
+      try {
+        commit("setIsLoading", true);
+        const token = localStorage.getItem("token");
+        if (token) {
+          const user = jwt.decode(token);
+          commit("setCurrentUser", user);
+          authService.setAuthToken(token);
+          commit("setIsLogged", true);
+        }
+      } catch (error) {
+        localStorage.removeItem("token");
+        commit("clearUserData");
+        commit("setIsLogged", false);
+      } finally {
+        commit("setIsLoading", false);
+      }
+    },
+    logout({ commit }) {
+      commit("setIsLoading", true);
+      localStorage.removeItem("token");
+      commit("clearUserData");
+      commit("setIsLogged", false);
+      commit("setIsLoading", false);
     },
   },
   mutations: {
@@ -53,5 +95,6 @@ export default {
         username: state.username,
       };
     },
+    isLogged: (state) => state.isLogged,
   },
 };

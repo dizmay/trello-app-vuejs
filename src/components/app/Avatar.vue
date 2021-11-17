@@ -1,19 +1,18 @@
 <template>
   <div>
-    <button class="avatar">{{ getFirstLetterInUppercase() }}</button>
+    <button class="avatar">{{ getFirstLetterInUppercase }}</button>
   </div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      username: "Admin",
-    };
+  props: {
+    username: {
+      type: String,
+    },
   },
-  methods: {
+  computed: {
     getFirstLetterInUppercase() {
-      console.log(this.username);
       return this.username[0].toUpperCase();
     },
   },

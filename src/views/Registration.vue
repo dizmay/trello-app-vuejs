@@ -1,6 +1,6 @@
 <template>
   <div class="auth__container">
-    <AuthModal @handleSubmit="handleLogin" />
+    <AuthModal isRegistration @handleSubmit="handleRegister" />
   </div>
 </template>
 
@@ -8,13 +8,13 @@
 import AuthModal from "@/components/app/AuthModal.vue";
 
 export default {
-  components: { AuthModal },
+  components: {
+    AuthModal,
+  },
   methods: {
-    async handleLogin(userData) {
-      delete userData.username;
-
+    async handleRegister(userData) {
       try {
-        await this.$store.dispatch("login", userData);
+        await this.$store.dispatch("register", userData);
         this.$router.push("/");
       } catch (error) {
         console.log(error);
@@ -23,3 +23,5 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped></style>
