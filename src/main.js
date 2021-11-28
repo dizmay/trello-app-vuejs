@@ -6,6 +6,7 @@ import VueToast from "vue-toast-notification";
 import "vue-toast-notification/dist/theme-default.css";
 import { ClickOutsideDirective } from "@/utils";
 import Button from "@/components/app/Button.vue";
+import Modal from "@/components/app/Modal.vue";
 
 createApp(App)
   .use(store)
@@ -13,4 +14,5 @@ createApp(App)
   .use(VueToast)
   .directive("click-outside", ClickOutsideDirective)
   .component("custom-btn", Button)
+  .component("custom-modal", Modal)
   .mount("#app");

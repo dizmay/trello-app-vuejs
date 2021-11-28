@@ -21,7 +21,7 @@ export default {
       menuItems: [
         {
           name: "Boards",
-          path: "/",
+          path: "/boards",
         },
         {
           name: "Notifications",

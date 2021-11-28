@@ -1,5 +1,6 @@
 <template>
   <button
+    @click="handleClick"
     :type="type || 'button'"
     :class="['custom-btn', { 'dark-btn': dark }, { 'light-btn': light }]"
   >
@@ -22,6 +23,9 @@ export default {
     },
     type: {
       type: String,
+    },
+    handleClick: {
+      type: Function,
     },
   },
 };

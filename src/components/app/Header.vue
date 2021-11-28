@@ -32,7 +32,6 @@ export default {
   },
   methods: {
     setIsOpen(isOpen) {
-      console.log("test", isOpen);
       this.isOpen = isOpen;
     },
     closeDropDown() {

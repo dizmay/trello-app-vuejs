@@ -8,7 +8,9 @@
           high rises to the home office, the way your team works is unique —
           accomplish it all with Trello.
         </p>
-        <custom-btn text="Try now" light />
+        <router-link to="/boards">
+          <custom-btn text="Try now" light />
+        </router-link>
       </div>
       <div class="home__image">
         <img src="@/assets/svg/teamwork.svg" alt="Teamwork" />
