@@ -15,7 +15,7 @@
         />
       </div>
     </div>
-    <div class="boards__grid">
+    <div class="boards__grid" v-if="boards.length">
       <div class="board" v-for="board in boards" :key="board.id">
         <button class="board__remove" @click="removeBoard(board.id)">
           &#10006;
@@ -23,6 +23,7 @@
         <span>{{ board.title }}</span>
       </div>
     </div>
+    <h3 class="boards__empty" v-else>You don't have any boards. Create one!</h3>
   </div>
 </template>
 
@@ -71,6 +72,7 @@ export default {
   }
 
   &__header {
+    padding-top: 1rem;
     color: #fff;
   }
 
@@ -113,6 +115,10 @@ export default {
     display: flex;
     justify-content: flex-end;
     padding: 0 5%;
+  }
+
+  &__empty {
+    color: #fff;
   }
 }
 </style>

@@ -1,4 +1,5 @@
 <template>
+  <loader />
   <Header />
   <div class="content">
     <router-view />
