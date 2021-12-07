@@ -47,5 +47,8 @@ export default {
   },
   getters: {
     boards: (state) => state.boards,
+    currentBoard: (state) => (boardId) => {
+      return state.boards.find(board => board.id === boardId)
+    }
   },
 };

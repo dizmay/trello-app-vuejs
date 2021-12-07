@@ -31,6 +31,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../public/main.css";
+
 .content {
   width: 100vw;
   height: 100vh;

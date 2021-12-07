@@ -3,6 +3,7 @@ import Home from "@/views/Home.vue";
 import Login from "@/views/Login.vue";
 import Registration from "@/views/Registration.vue";
 import Boards from "@/views/Boards.vue";
+import Board from "@/views/Board.vue";
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: "/boards",
     name: "Boards",
     component: Boards,
+  },
+  {
+    path: "/boards/:id",
+    name: "Board",
+    component: Board,
   },
 ];
 

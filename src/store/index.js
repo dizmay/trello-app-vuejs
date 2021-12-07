@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 import auth from "./auth";
 import boards from "./boards";
+import columns from "./columns";
 
 export default createStore({
   state: {
@@ -18,7 +19,7 @@ export default createStore({
       state.error = "";
     },
   },
-  modules: { auth, boards },
+  modules: { auth, boards, columns },
   actions: {},
   getters: {
     isLoading: (state) => state.isLoading,

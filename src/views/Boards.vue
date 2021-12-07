@@ -16,12 +16,19 @@
       </div>
     </div>
     <div class="boards__grid" v-if="boards.length">
-      <div class="board" v-for="board in boards" :key="board.id">
-        <button class="board__remove" @click="removeBoard(board.id)">
-          &#10006;
-        </button>
-        <span>{{ board.title }}</span>
-      </div>
+      <router-link
+        :to="{ name: 'Board', params: { id: board.id } }"
+        v-for="board in boards"
+        :key="board.id"
+        class="board"
+      >
+        <div>
+          <button class="board__remove" @click="removeBoard(board.id)">
+            <font-awesome-icon icon="trash" />
+          </button>
+          <span>{{ board.title }}</span>
+        </div>
+      </router-link>
     </div>
     <h3 class="boards__empty" v-else>You don't have any boards. Create one!</h3>
   </div>
@@ -96,9 +103,8 @@ export default {
         position: absolute;
         top: 0.5rem;
         right: 0.5rem;
-        width: 1.25rem;
-        height: 1.25rem;
-        background-color: red;
+        width: 1.5rem;
+        height: 1.5rem;
         border: none;
         border-radius: 50%;
         display: flex;
@@ -106,6 +112,10 @@ export default {
         justify-content: center;
         color: #fff;
         cursor: pointer;
+
+        svg {
+          color: #000;
+        }
       }
     }
   }
