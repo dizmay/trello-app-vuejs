@@ -87,6 +87,8 @@ export default {
   }
 
   &__actions {
+    display: flex;
+
     button {
       background-color: transparent;
       border: none;

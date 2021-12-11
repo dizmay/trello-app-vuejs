@@ -14,6 +14,20 @@ class BoardsService {
   createBoard(boardData) {
     return axios.post(process.env.VUE_APP_BASE_URL + "boards", boardData);
   }
+
+  getBoardUsers(boardId) {
+    return axios.post(process.env.VUE_APP_BASE_URL + "users-boards", {
+      boardId,
+    });
+  }
+
+  inviteUserToBoard({ username, userId, boardId }) {
+    return axios.post(process.env.VUE_APP_BASE_URL + "invite-board", {
+      username,
+      userId,
+      boardId,
+    });
+  }
 }
 
 export default new BoardsService();

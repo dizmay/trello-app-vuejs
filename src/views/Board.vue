@@ -22,12 +22,14 @@
         />
       </div>
     </div>
+    <BoardMenu :boardId="boardId" />
   </div>
 </template>
 
 <script>
 import BoardColumn from "@/components/BoardColumn.vue";
-import CreateColumn from "../components/CreateColumn.vue";
+import CreateColumn from "@/components/CreateColumn.vue";
+import BoardMenu from "@/components/BoardMenu.vue";
 
 export default {
   data() {
@@ -52,6 +54,7 @@ export default {
   components: {
     BoardColumn,
     CreateColumn,
+    BoardMenu,
   },
   computed: {
     columns() {
@@ -69,6 +72,7 @@ export default {
       this.$store.dispatch("getBoards");
     }
     this.$store.dispatch("getColumns", this.boardId);
+    this.$store.dispatch("getBoardUsers", this.boardId);
   },
 };
 </script>
@@ -84,6 +88,7 @@ export default {
   &__heading {
     text-align: center;
     color: #fff;
+    padding: 1rem 0;
   }
 }
 
