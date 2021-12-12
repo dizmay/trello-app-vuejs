@@ -1,8 +1,8 @@
-import columnsService from '@/services/columns.js';
+import columnsService from "@/services/columns.js";
 
 export default {
   state: {
-    columns: []
+    columns: [],
   },
   actions: {
     async getColumns({ commit }, boardId) {
@@ -53,9 +53,9 @@ export default {
   mutations: {
     setColumns(state, columns) {
       state.columns = columns;
-    }
+    },
   },
   getters: {
-    columns: (state) => state.columns
+    columns: (state) => state.columns,
   },
 };

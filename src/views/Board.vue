@@ -8,6 +8,7 @@
         :title="column.title"
         :id="column.id"
         :boardId="boardId"
+        :cards="column.tasks"
       />
       <div v-click-outside="closeModal">
         <CreateColumn @click="openModal" />
@@ -94,5 +95,6 @@ export default {
 
 .column__container {
   display: flex;
+  align-items: flex-start;
 }
 </style>

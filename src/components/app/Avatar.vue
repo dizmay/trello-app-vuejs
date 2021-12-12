@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <button class="avatar">{{ getFirstLetterInUppercase }}</button>
-  </div>
+  <button class="avatar">{{ getFirstLetterInUppercase }}</button>
 </template>
 
 <script>
@@ -19,7 +17,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .avatar {
   background-color: #6ef9bc;
   width: 2.25rem;

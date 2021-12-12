@@ -2,6 +2,7 @@ import { createStore } from "vuex";
 import auth from "./auth";
 import boards from "./boards";
 import columns from "./columns";
+import card from "./card";
 
 export default createStore({
   state: {
@@ -19,7 +20,7 @@ export default createStore({
       state.error = "";
     },
   },
-  modules: { auth, boards, columns },
+  modules: { auth, boards, columns, card },
   actions: {},
   getters: {
     isLoading: (state) => state.isLoading,

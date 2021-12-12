@@ -3,8 +3,8 @@
     <div class="column__heading">
       <div class="column__title">{{ title }}</div>
       <div class="column__actions" v-click-outside="closeModal">
-        <button type="button" @click="openModal">
-          <font-awesome-icon icon="pen" />
+        <div>
+          <icon-btn :handleClick="openModal" icon="pen" />
           <custom-modal
             v-if="isModalOpen"
             header="Update column"
@@ -14,16 +14,32 @@
             :closeModal="closeModal"
             :handleSubmit="updateColumn"
           />
-        </button>
-        <button type="button" @click="removeColumn">
-          <font-awesome-icon icon="trash" />
-        </button>
+        </div>
+        <icon-btn :handleClick="removeColumn" icon="trash" />
+      </div>
+    </div>
+    <div class="column__body">
+      <Card
+        v-for="card in filteredCards"
+        :key="card.id"
+        :title="card.title"
+        :description="card.description"
+        :assignedUsers="card.assigned"
+        :boardId="boardId"
+        :columndId="id"
+        :id="card.id"
+      />
+      <div class="column__card-creation">
+        <icon-btn icon="plus-circle" />
+        <span>Create card</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Card from "@/components/Card.vue";
+
 export default {
   data() {
     return {
@@ -63,13 +79,24 @@ export default {
     boardId: {
       type: String,
     },
+    cards: {
+      type: Array,
+    },
+  },
+  components: {
+    Card,
+  },
+  computed: {
+    filteredCards() {
+      return this.cards.filter((card) => card.id !== null);
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .column {
-  width: 12vw;
+  min-width: 12vw;
   padding: 0.5rem;
   background-color: #000;
   border: 1px solid #fff;
@@ -80,6 +107,14 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding-bottom: 0.5rem;
+    border-bottom: 0.25rem solid #fff;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   &__title {
@@ -88,17 +123,16 @@ export default {
 
   &__actions {
     display: flex;
+  }
 
-    button {
-      background-color: transparent;
-      border: none;
-      color: #fff;
-      cursor: pointer;
-
-      &:first-child {
-        margin-right: 0.5rem;
-      }
-    }
+  &__card-creation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    padding-top: 0.5rem;
+    border-bottom: 0.1rem solid #fff;
+    cursor: pointer;
   }
 }
 </style>
