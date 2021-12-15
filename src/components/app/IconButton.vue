@@ -1,5 +1,5 @@
 <template>
-  <button class="icon-btn" type="button" @click="handleClick">
+  <button class="icon-btn" :type="type || 'button'" @click="handleClick">
     <font-awesome-icon :icon="icon" />
   </button>
 </template>
@@ -9,11 +9,13 @@ export default {
   props: {
     handleClick: {
       type: Function,
-      required: true,
     },
     icon: {
       type: String,
       required: true,
+    },
+    type: {
+      type: String,
     },
   },
 };

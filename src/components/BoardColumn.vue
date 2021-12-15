@@ -29,7 +29,12 @@
         :columndId="id"
         :id="card.id"
       />
-      <div class="column__card-creation">
+      <CardCreate
+        v-if="isEditMode"
+        :disableEditMode="disableEditMode"
+        :handleSubmit="createCard"
+      />
+      <div class="column__card-creation" @click="enableEditMode">
         <icon-btn icon="plus-circle" />
         <span>Create card</span>
       </div>
@@ -39,11 +44,13 @@
 
 <script>
 import Card from "@/components/Card.vue";
+import CardCreate from "@/components/CardCreate.vue";
 
 export default {
   data() {
     return {
       isModalOpen: false,
+      isEditMode: false,
     };
   },
   methods: {
@@ -67,6 +74,21 @@ export default {
       });
       this.closeModal();
     },
+    enableEditMode() {
+      this.isEditMode = true;
+    },
+    disableEditMode() {
+      this.isEditMode = false;
+    },
+    createCard(title, description) {
+      this.$store.dispatch("createCard", {
+        title,
+        description,
+        columnId: this.id,
+        boardId: this.boardId,
+      });
+      this.disableEditMode();
+    },
   },
   props: {
     title: {
@@ -85,6 +107,7 @@ export default {
   },
   components: {
     Card,
+    CardCreate,
   },
   computed: {
     filteredCards() {

@@ -1,7 +1,14 @@
 <template>
-  <div class="card">
+  <CardCreate
+    v-if="isEditMode"
+    :disableEditMode="disableEditMode"
+    :handleSubmit="updateCard"
+    :title="title"
+    :description="description"
+  />
+  <div class="card" v-else>
     <div class="card__actions">
-      <icon-btn icon="pen" />
+      <icon-btn icon="pen" :handleClick="enableEditMode" />
       <icon-btn icon="trash" :handleClick="removeCard" />
     </div>
     <h4 class="card__title">{{ title }}</h4>
@@ -22,8 +29,14 @@
 
 <script>
 import Avatar from "@/components/app/Avatar.vue";
+import CardCreate from "@/components/CardCreate.vue";
 
 export default {
+  data() {
+    return {
+      isEditMode: false,
+    };
+  },
   methods: {
     removeCard() {
       this.$store.dispatch("removeCard", {
@@ -31,6 +44,21 @@ export default {
         columnId: this.columndId,
         boardId: this.boardId,
       });
+    },
+    enableEditMode() {
+      this.isEditMode = true;
+    },
+    disableEditMode() {
+      this.isEditMode = false;
+    },
+    updateCard(title, description) {
+      this.$store.dispatch("updateCard", {
+        id: this.id,
+        title,
+        description,
+        boardId: this.boardId,
+      });
+      this.disableEditMode();
     },
   },
   props: {
@@ -55,6 +83,7 @@ export default {
   },
   components: {
     Avatar,
+    CardCreate,
   },
 };
 </script>
