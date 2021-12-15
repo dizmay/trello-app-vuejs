@@ -41,5 +41,38 @@ export default {
         commit("setIsLoading", false);
       }
     },
+    async assignUserToCard(
+      { commit, dispatch },
+      { taskId, userId, boardId, columnId }
+    ) {
+      try {
+        commit("setIsLoading", true);
+        await cardService.assignUserToCard({
+          taskId,
+          userId,
+          boardId,
+          columnId,
+        });
+        dispatch("getColumns", boardId);
+      } catch (error) {
+        console.log("cards error: ", error);
+      } finally {
+        commit("setIsLoading", false);
+      }
+    },
+    async cancelUserAssignment(
+      { commit, dispatch },
+      { taskId, userId, boardId }
+    ) {
+      try {
+        commit("setIsLoading", true);
+        await cardService.cancelUserAssignment({ taskId, userId, boardId });
+        dispatch("getColumns", boardId);
+      } catch (error) {
+        console.log("cards error: ", error);
+      } finally {
+        commit("setIsLoading", false);
+      }
+    },
   },
 };

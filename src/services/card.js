@@ -23,6 +23,21 @@ class CardService {
       description,
     });
   }
+
+  assignUserToCard({ taskId, userId, boardId, columnId }) {
+    return axios.post(process.env.VUE_APP_BASE_URL + "assign-user", {
+      taskId,
+      userId,
+      boardId,
+      columnId,
+    });
+  }
+
+  cancelUserAssignment({ taskId, userId, boardId }) {
+    return axios.delete(process.env.VUE_APP_BASE_URL + "assign-user", {
+      params: { taskId, userId, boardId },
+    });
+  }
 }
 
 export default new CardService();

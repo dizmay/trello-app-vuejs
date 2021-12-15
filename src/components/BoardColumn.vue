@@ -26,7 +26,7 @@
         :description="card.description"
         :assignedUsers="card.assigned"
         :boardId="boardId"
-        :columndId="id"
+        :columnId="id"
         :id="card.id"
       />
       <CardCreate

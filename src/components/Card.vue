@@ -21,7 +21,17 @@
           :key="user.id"
           :username="user.username"
         />
-        <icon-btn icon="plus-circle" />
+        <div class="assigned-users" v-click-outside="disableAssignmentMode">
+          <icon-btn icon="plus-circle" :handleClick="enableAssignmentMode" />
+          <CardAssignment
+            v-if="isAssignmentMode"
+            :boardUsers="boardUsers"
+            :assignedUsers="assignedUsers"
+            :taskId="id"
+            :columnId="columnId"
+            :boardId="boardId"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -30,18 +40,20 @@
 <script>
 import Avatar from "@/components/app/Avatar.vue";
 import CardCreate from "@/components/CardCreate.vue";
+import CardAssignment from "@/components/CardAssignment.vue";
 
 export default {
   data() {
     return {
       isEditMode: false,
+      isAssignmentMode: false,
     };
   },
   methods: {
     removeCard() {
       this.$store.dispatch("removeCard", {
         id: this.id,
-        columnId: this.columndId,
+        columnId: this.columnId,
         boardId: this.boardId,
       });
     },
@@ -50,6 +62,12 @@ export default {
     },
     disableEditMode() {
       this.isEditMode = false;
+    },
+    enableAssignmentMode() {
+      this.isAssignmentMode = true;
+    },
+    disableAssignmentMode() {
+      this.isAssignmentMode = false;
     },
     updateCard(title, description) {
       this.$store.dispatch("updateCard", {
@@ -61,29 +79,23 @@ export default {
       this.disableEditMode();
     },
   },
+  computed: {
+    boardUsers() {
+      return this.$store.getters.boardUsers;
+    },
+  },
   props: {
-    title: {
-      type: String,
-    },
-    description: {
-      type: String,
-    },
-    assignedUsers: {
-      type: Array,
-    },
-    boardId: {
-      type: String,
-    },
-    columndId: {
-      type: String,
-    },
-    id: {
-      type: String,
-    },
+    title: String,
+    description: String,
+    assignedUsers: Array,
+    boardId: String,
+    columnId: Number,
+    id: Number,
   },
   components: {
     Avatar,
     CardCreate,
+    CardAssignment,
   },
 };
 </script>
@@ -142,6 +154,10 @@ export default {
       height: 1.5rem;
       font-size: 0.8rem;
     }
+  }
+
+  .assigned-users {
+    display: flex;
   }
 }
 </style>
