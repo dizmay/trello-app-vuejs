@@ -1,5 +1,5 @@
 <template>
-  <button class="icon-btn" :type="type || 'button'" @click="handleClick">
+  <button class="icon-btn" :type="type || 'button'" @click.stop="handleClick">
     <font-awesome-icon :icon="icon" />
   </button>
 </template>
@@ -21,7 +21,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .icon-btn {
   background-color: transparent;
   border: none;

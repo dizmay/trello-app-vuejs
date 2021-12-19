@@ -2,45 +2,38 @@
   <div class="boards__container">
     <h2 class="boards__header">My Boards</h2>
     <div class="boards__create">
-      <div v-click-outside="closeModal">
+      <div>
         <custom-btn dark text="Create board" :handleClick="openModal" />
-        <custom-modal
-          v-if="isModalOpen"
-          header="New board"
-          label="Board title:"
-          submitText="Create"
-          :isOpen="isModalOpen"
-          :closeModal="closeModal"
-          :handleSubmit="createBoard"
-        />
       </div>
     </div>
     <div class="boards__grid" v-if="boards.length">
-      <router-link
-        :to="{ name: 'Board', params: { id: board.id } }"
-        v-for="board in boards"
-        :key="board.id"
-        class="board"
-      >
-        <div>
-          <button class="board__remove" @click="removeBoard(board.id)">
-            <font-awesome-icon icon="trash" />
-          </button>
-          <span>{{ board.title }}</span>
+      <div class="board" v-for="board in boards" :key="board.id">
+        <div class="board__remove">
+          <icon-btn icon="trash" :handleClick="removeBoard(board.id)" />
         </div>
-      </router-link>
+        <router-link :to="{ name: 'Board', params: { id: board.id } }">
+          <span>{{ board.title }}</span>
+        </router-link>
+      </div>
     </div>
     <h3 class="boards__empty" v-else>You don't have any boards. Create one!</h3>
   </div>
+  <custom-modal
+    v-if="isModalOpen"
+    header="New board"
+    label="Board title:"
+    submitText="Create"
+    :isOpen="isModalOpen"
+    :closeModal="closeModal"
+    :handleSubmit="createBoard"
+  />
 </template>
 
 <script>
+import ModalMixin from "@/mixins/modal";
+
 export default {
-  data() {
-    return {
-      isModalOpen: false,
-    };
-  },
+  mixins: [ModalMixin],
   computed: {
     boards() {
       return this.$store.getters.boards;
@@ -51,15 +44,9 @@ export default {
   },
   methods: {
     removeBoard(id) {
-      this.$store.dispatch("removeBoard", id);
-    },
-    closeModal() {
-      if (this.isModalOpen) {
-        this.isModalOpen = false;
-      }
-    },
-    openModal() {
-      this.isModalOpen = true;
+      return () => {
+        this.$store.dispatch("removeBoard", id);
+      };
     },
     createBoard(title) {
       this.$store.dispatch("createBoard", title);
@@ -94,26 +81,22 @@ export default {
 
     .board {
       background-color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       position: relative;
+
+      a {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
       &__remove {
         position: absolute;
         top: 0.5rem;
         right: 0.5rem;
-        width: 1.5rem;
-        height: 1.5rem;
-        border: none;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-        cursor: pointer;
 
-        svg {
+        .icon-btn {
           color: #000;
         }
       }

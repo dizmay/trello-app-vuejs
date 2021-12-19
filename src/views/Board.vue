@@ -10,42 +10,37 @@
         :boardId="boardId"
         :cards="column.tasks"
       />
-      <div v-click-outside="closeModal">
+      <div>
         <CreateColumn @click="openModal" />
-        <custom-modal
-          v-if="isModalOpen"
-          header="New column"
-          label="Column title:"
-          submitText="Create"
-          :isOpen="isModalOpen"
-          :closeModal="closeModal"
-          :handleSubmit="createColumn"
-        />
       </div>
     </div>
     <BoardMenu :boardId="boardId" />
   </div>
+  <custom-modal
+    v-if="isModalOpen"
+    header="New column"
+    label="Column title:"
+    submitText="Create"
+    :isOpen="isModalOpen"
+    :closeModal="closeModal"
+    :handleSubmit="createColumn"
+  />
 </template>
 
 <script>
+import ModalMixin from "@/mixins/modal";
 import BoardColumn from "@/components/BoardColumn.vue";
 import CreateColumn from "@/components/CreateColumn.vue";
 import BoardMenu from "@/components/BoardMenu.vue";
 
 export default {
+  mixins: [ModalMixin],
   data() {
     return {
-      isModalOpen: false,
       boardId: this.$route.params.id,
     };
   },
   methods: {
-    closeModal() {
-      this.isModalOpen = false;
-    },
-    openModal() {
-      this.isModalOpen = true;
-    },
     createColumn(title) {
       const boardData = { boardId: this.boardId, title };
       this.$store.dispatch("createColumn", boardData);

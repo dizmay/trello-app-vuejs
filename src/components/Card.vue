@@ -6,7 +6,7 @@
     :title="title"
     :description="description"
   />
-  <div class="card" v-else>
+  <div class="card" v-else @click="openModal">
     <div class="card__actions">
       <icon-btn icon="pen" :handleClick="enableEditMode" />
       <icon-btn icon="trash" :handleClick="removeCard" />
@@ -35,20 +35,32 @@
       </div>
     </div>
   </div>
+  <CardModal
+    v-if="isModalOpen"
+    :title="title"
+    :description="description"
+    :assignedUsers="assignedUsers"
+    :boardId="boardId"
+    :columnId="columnId"
+    :taskId="id"
+    :boardUsers="boardUsers"
+    :columnTitle="columnTitle"
+    :closeModal="closeModal"
+    :comments="comments"
+  />
 </template>
 
 <script>
+import ModalMixin from "@/mixins/modal";
+import EditMode from "@/mixins/editMode";
+import AssignmentMode from "@/mixins/assignmentMode";
 import Avatar from "@/components/app/Avatar.vue";
 import CardCreate from "@/components/CardCreate.vue";
 import CardAssignment from "@/components/CardAssignment.vue";
+import CardModal from "@/components/CardModal.vue";
 
 export default {
-  data() {
-    return {
-      isEditMode: false,
-      isAssignmentMode: false,
-    };
-  },
+  mixins: [ModalMixin, EditMode, AssignmentMode],
   methods: {
     removeCard() {
       this.$store.dispatch("removeCard", {
@@ -56,18 +68,6 @@ export default {
         columnId: this.columnId,
         boardId: this.boardId,
       });
-    },
-    enableEditMode() {
-      this.isEditMode = true;
-    },
-    disableEditMode() {
-      this.isEditMode = false;
-    },
-    enableAssignmentMode() {
-      this.isAssignmentMode = true;
-    },
-    disableAssignmentMode() {
-      this.isAssignmentMode = false;
     },
     updateCard(title, description) {
       this.$store.dispatch("updateCard", {
@@ -91,11 +91,14 @@ export default {
     boardId: String,
     columnId: Number,
     id: Number,
+    columnTitle: String,
+    comments: Array,
   },
   components: {
     Avatar,
     CardCreate,
     CardAssignment,
+    CardModal,
   },
 };
 </script>
@@ -109,6 +112,7 @@ export default {
   border-top: 0.1rem solid #fff;
   border-bottom: 0.1rem solid #fff;
   padding: 0.5rem 0;
+  cursor: grab;
 
   &:first-child {
     border-top: none;

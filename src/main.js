@@ -9,6 +9,7 @@ import {
   faPlusCircle,
   faCheckCircle,
   faBan,
+  faPaperPlane,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import VueToast from "vue-toast-notification";
@@ -19,7 +20,7 @@ import Button from "@/components/app/Button.vue";
 import IconButton from "@/components/app/IconButton.vue";
 import Modal from "@/components/app/Modal.vue";
 
-library.add(faTrash, faPen, faPlusCircle, faCheckCircle, faBan);
+library.add(faTrash, faPen, faPlusCircle, faCheckCircle, faBan, faPaperPlane);
 
 createApp(App)
   .use(store)

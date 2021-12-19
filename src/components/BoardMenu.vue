@@ -27,21 +27,12 @@
 </template>
 
 <script>
+import ModalMixin from "@/mixins/modal";
 import Avatar from "@/components/app/Avatar.vue";
 
 export default {
-  data() {
-    return {
-      isModalOpen: false,
-    };
-  },
+  mixins: [ModalMixin],
   methods: {
-    closeModal() {
-      this.isModalOpen = false;
-    },
-    openModal() {
-      this.isModalOpen = true;
-    },
     inviteUser(username) {
       const inviteData = { boardId: this.boardId, username };
       this.$store.dispatch("inviteUserToBoard", inviteData);

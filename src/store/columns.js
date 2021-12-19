@@ -49,6 +49,17 @@ export default {
         commit("setIsLoading", false);
       }
     },
+    async moveColumn({ commit, dispatch }, { dragId, dropId, boardId }) {
+      try {
+        commit("setIsLoading", true);
+        await columnsService.moveColumn({ dragId, dropId, boardId });
+        dispatch("getColumns", boardId);
+      } catch (error) {
+        console.log("columns error: ", error);
+      } finally {
+        commit("setIsLoading", false);
+      }
+    },
   },
   mutations: {
     setColumns(state, columns) {

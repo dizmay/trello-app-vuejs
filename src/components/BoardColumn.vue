@@ -1,19 +1,20 @@
 <template>
-  <div class="column">
+  <div
+    :id="id"
+    class="column"
+    draggable="true"
+    @dragstart="dragStart"
+    @dragover.prevent=""
+    @dragend.stop.prevent="dragEnd"
+    @dragenter.stop.prevent="dragEnter"
+    @dragleave.stop.prevent="dragLeave"
+    @drop.stop.prevent="drop"
+  >
     <div class="column__heading">
       <div class="column__title">{{ title }}</div>
-      <div class="column__actions" v-click-outside="closeModal">
+      <div class="column__actions">
         <div>
           <icon-btn :handleClick="openModal" icon="pen" />
-          <custom-modal
-            v-if="isModalOpen"
-            header="Update column"
-            label="New column title:"
-            submitText="Update"
-            :isOpen="isModalOpen"
-            :closeModal="closeModal"
-            :handleSubmit="updateColumn"
-          />
         </div>
         <icon-btn :handleClick="removeColumn" icon="trash" />
       </div>
@@ -28,6 +29,8 @@
         :boardId="boardId"
         :columnId="id"
         :id="card.id"
+        :columnTitle="title"
+        :comments="card.comments"
       />
       <CardCreate
         v-if="isEditMode"
@@ -40,26 +43,29 @@
       </div>
     </div>
   </div>
+  <custom-modal
+    v-if="isModalOpen"
+    header="Update column"
+    label="New column title:"
+    submitText="Update"
+    :isOpen="isModalOpen"
+    :closeModal="closeModal"
+    :handleSubmit="updateColumn"
+  />
 </template>
 
 <script>
+import ModalMixin from "@/mixins/modal";
+import EditModeMixin from "@/mixins/editMode";
 import Card from "@/components/Card.vue";
 import CardCreate from "@/components/CardCreate.vue";
 
 export default {
+  mixins: [ModalMixin, EditModeMixin],
   data() {
-    return {
-      isModalOpen: false,
-      isEditMode: false,
-    };
+    return {};
   },
   methods: {
-    openModal() {
-      this.isModalOpen = true;
-    },
-    closeModal() {
-      this.isModalOpen = false;
-    },
     removeColumn() {
       this.$store.dispatch("removeColumn", {
         columnId: this.id,
@@ -74,12 +80,6 @@ export default {
       });
       this.closeModal();
     },
-    enableEditMode() {
-      this.isEditMode = true;
-    },
-    disableEditMode() {
-      this.isEditMode = false;
-    },
     createCard(title, description) {
       this.$store.dispatch("createCard", {
         title,
@@ -88,6 +88,31 @@ export default {
         boardId: this.boardId,
       });
       this.disableEditMode();
+    },
+    dragStart(event) {
+      event.dataTransfer.setData("dragId", event.currentTarget.id);
+      event.currentTarget.style.opacity = "0.4";
+    },
+    dragEnd(event) {
+      event.currentTarget.style.opacity = "1.0";
+    },
+    dragEnter(event) {
+      event.currentTarget.style.border = "0.25rem solid #fff";
+    },
+    dragLeave(event) {
+      event.currentTarget.style.border = "1px solid #fff";
+    },
+    drop(event) {
+      const dragId = Number(event.dataTransfer.getData("dragId"));
+      const dropId = Number(event.currentTarget.id);
+      if (dragId !== dropId) {
+        this.$store.dispatch("moveColumn", {
+          dragId,
+          dropId,
+          boardId: this.boardId,
+        });
+      }
+      event.currentTarget.style.border = "1px solid #fff";
     },
   },
   props: {

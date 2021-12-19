@@ -1,20 +1,22 @@
 <template>
-  <div class="modal__container">
-    <h3 class="modal__header">{{ header }}</h3>
-    <form class="modal__form" @submit.prevent="handleSubmit(inputValue)">
-      <div class="modal__text">
-        <label v-if="label" for="text">{{ label }}</label>
-        <input type="text" id="text" v-model.trim="inputValue" />
-      </div>
-      <div class="modal__actions">
-        <custom-btn light :text="submitText || 'Submit'" type="submit" />
-        <custom-btn
-          dark
-          :text="cancelText || 'Cancel'"
-          :handleClick="closeModal"
-        />
-      </div>
-    </form>
+  <div class="backdrop" @click.self="closeModal">
+    <div class="modal__container">
+      <h3 class="modal__header">{{ header }}</h3>
+      <form class="modal__form" @submit.prevent="handleSubmit(inputValue)">
+        <div class="modal__text">
+          <label v-if="label" for="text">{{ label }}</label>
+          <input type="text" id="text" v-model.trim="inputValue" />
+        </div>
+        <div class="modal__actions">
+          <custom-btn light :text="submitText || 'Submit'" type="submit" />
+          <custom-btn
+            dark
+            :text="cancelText || 'Cancel'"
+            :handleClick="closeModal"
+          />
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -56,6 +58,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($color: #a9a9a9, $alpha: 0.8);
+}
+
 .modal {
   &__container {
     width: 25%;
