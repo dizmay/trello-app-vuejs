@@ -38,6 +38,16 @@ class CardService {
       params: { taskId, userId, boardId },
     });
   }
+
+  moveCard({ dragId, dropId, dragColumnId, dropColumnId, side }) {
+    return axios.put(process.env.VUE_APP_BASE_URL + "columns-tasks/move-card", {
+      dragId,
+      dropId,
+      dragColumnId,
+      dropColumnId,
+      side,
+    });
+  }
 }
 
 export default new CardService();

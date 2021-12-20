@@ -6,33 +6,49 @@
     :title="title"
     :description="description"
   />
-  <div class="card" v-else @click="openModal">
-    <div class="card__actions">
-      <icon-btn icon="pen" :handleClick="enableEditMode" />
-      <icon-btn icon="trash" :handleClick="removeCard" />
-    </div>
-    <h4 class="card__title">{{ title }}</h4>
-    <span class="card__description">{{ description }}</span>
-    <div class="card__assigned-users">
-      <span>Assigned users:</span>
-      <div class="assigned-users__wrapper">
-        <Avatar
-          v-for="user in assignedUsers"
-          :key="user.id"
-          :username="user.username"
-        />
-        <div class="assigned-users" v-click-outside="disableAssignmentMode">
-          <icon-btn icon="plus-circle" :handleClick="enableAssignmentMode" />
-          <CardAssignment
-            v-if="isAssignmentMode"
-            :boardUsers="boardUsers"
-            :assignedUsers="assignedUsers"
-            :taskId="id"
-            :columnId="columnId"
-            :boardId="boardId"
-          />
-        </div>
+  <div
+    class="card"
+    v-else
+    :id="id"
+    :columnId="columnId"
+    draggable="true"
+    @click="openModal"
+    @dragover.prevent=""
+    @dragstart.stop="dragStart"
+    @dragend.prevent="dragEnd"
+  >
+    <div
+      class="card__top"
+      side="top"
+      :id="id"
+      :columnId="columnId"
+      @dragenter.stop.prevent="dragEnter"
+      @dragleave.stop.prevent="dragLeave"
+      @drop.stop.prevent="drop"
+    >
+      <div class="card__actions">
+        <icon-btn icon="pen" :handleClick="enableEditMode" />
+        <icon-btn icon="trash" :handleClick="removeCard" />
       </div>
+      <h4 class="card__title">{{ title }}</h4>
+      <span class="card__description">{{ description }}</span>
+    </div>
+    <div
+      class="card__assigned-users"
+      side="bot"
+      :id="id"
+      :columnId="columnId"
+      @dragenter.stop.prevent="dragEnter"
+      @dragleave.stop.prevent="dragLeave"
+      @drop.stop.prevent="drop"
+    >
+      <UserAssignment
+        :assignedUsers="assignedUsers"
+        :boardId="boardId"
+        :columnId="columnId"
+        :taskId="id"
+        :boardUsers="boardUsers"
+      />
     </div>
   </div>
   <CardModal
@@ -54,9 +70,8 @@
 import ModalMixin from "@/mixins/modal";
 import EditMode from "@/mixins/editMode";
 import AssignmentMode from "@/mixins/assignmentMode";
-import Avatar from "@/components/app/Avatar.vue";
+import UserAssignment from "@/components/app/UserAssignment.vue";
 import CardCreate from "@/components/CardCreate.vue";
-import CardAssignment from "@/components/CardAssignment.vue";
 import CardModal from "@/components/CardModal.vue";
 
 export default {
@@ -78,6 +93,40 @@ export default {
       });
       this.disableEditMode();
     },
+    dragStart(event) {
+      this.updateCardDragId(event.currentTarget.id);
+      event.dataTransfer.setData("dragId", event.currentTarget.id);
+      event.dataTransfer.setData(
+        "columnId",
+        event.currentTarget.getAttribute("columnId")
+      );
+      event.currentTarget.style.opacity = "0.4";
+    },
+    dragEnd(event) {
+      event.currentTarget.style.opacity = "1.0";
+    },
+    dragEnter(event) {
+      const dragEnterId = event.currentTarget.id;
+      if (dragEnterId === this.cardDragId) return;
+    },
+    dragLeave() {},
+    drop(event) {
+      const dropId = JSON.parse(event.currentTarget.id);
+      const dragColumnId = JSON.parse(event.dataTransfer.getData("columnId"));
+      const dropColumnId = JSON.parse(
+        event.currentTarget.getAttribute("columnId")
+      );
+      const side = event.currentTarget.getAttribute("side");
+      this.$store.dispatch("moveCard", {
+        dragId: Number(this.cardDragId),
+        dropId,
+        dragColumnId,
+        dropColumnId,
+        side,
+        boardId: this.boardId,
+      });
+      this.updateCardDragId(null);
+    },
   },
   computed: {
     boardUsers() {
@@ -93,12 +142,13 @@ export default {
     id: Number,
     columnTitle: String,
     comments: Array,
+    cardDragId: String,
+    updateCardDragId: Function,
   },
   components: {
-    Avatar,
     CardCreate,
-    CardAssignment,
     CardModal,
+    UserAssignment,
   },
 };
 </script>
@@ -113,6 +163,7 @@ export default {
   border-bottom: 0.1rem solid #fff;
   padding: 0.5rem 0;
   cursor: grab;
+  transition: transform 0.5s ease-in-out;
 
   &:first-child {
     border-top: none;
@@ -137,31 +188,6 @@ export default {
   &__description {
     font-style: italic;
     color: #ccc;
-  }
-
-  &__assigned-users {
-    .assigned-users__wrapper {
-      display: flex;
-      padding: 0.15rem 0;
-
-      & > * {
-        margin-right: 0.15rem;
-      }
-
-      & > *:last-child {
-        margin-right: 0;
-      }
-    }
-
-    .avatar {
-      width: 1.5rem;
-      height: 1.5rem;
-      font-size: 0.8rem;
-    }
-  }
-
-  .assigned-users {
-    display: flex;
   }
 }
 </style>

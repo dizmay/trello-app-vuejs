@@ -31,6 +31,8 @@
         :id="card.id"
         :columnTitle="title"
         :comments="card.comments"
+        :cardDragId="cardDragId"
+        :updateCardDragId="updateCardDragId"
       />
       <CardCreate
         v-if="isEditMode"
@@ -62,9 +64,6 @@ import CardCreate from "@/components/CardCreate.vue";
 
 export default {
   mixins: [ModalMixin, EditModeMixin],
-  data() {
-    return {};
-  },
   methods: {
     removeColumn() {
       this.$store.dispatch("removeColumn", {
@@ -90,7 +89,7 @@ export default {
       this.disableEditMode();
     },
     dragStart(event) {
-      event.dataTransfer.setData("dragId", event.currentTarget.id);
+      event.dataTransfer.setData("columnId", event.currentTarget.id);
       event.currentTarget.style.opacity = "0.4";
     },
     dragEnd(event) {
@@ -103,8 +102,20 @@ export default {
       event.currentTarget.style.border = "1px solid #fff";
     },
     drop(event) {
-      const dragId = Number(event.dataTransfer.getData("dragId"));
+      const dragId = Number(event.dataTransfer.getData("columnId"));
       const dropId = Number(event.currentTarget.id);
+      console.log("drag: ", dragId, "drop: ", dropId);
+      if (this.cardDragId !== null) {
+        this.$store.dispatch("moveCard", {
+          dragId: Number(this.cardDragId),
+          dropId,
+          dragColumnId: dragId,
+          dropColumnId: dropId,
+          side: "empty",
+          boardId: this.boardId,
+        });
+        return;
+      }
       if (dragId !== dropId) {
         this.$store.dispatch("moveColumn", {
           dragId,
@@ -116,19 +127,12 @@ export default {
     },
   },
   props: {
-    title: {
-      type: String,
-      required: true,
-    },
-    id: {
-      type: Number,
-    },
-    boardId: {
-      type: String,
-    },
-    cards: {
-      type: Array,
-    },
+    title: String,
+    id: Number,
+    boardId: String,
+    cards: Array,
+    cardDragId: String,
+    updateCardDragId: Function,
   },
   components: {
     Card,
@@ -150,6 +154,7 @@ export default {
   border: 1px solid #fff;
   border-radius: 1rem;
   margin-right: 1rem;
+  cursor: grab;
 
   &__heading {
     display: flex;

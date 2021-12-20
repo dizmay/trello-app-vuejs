@@ -9,6 +9,8 @@
         :id="column.id"
         :boardId="boardId"
         :cards="column.tasks"
+        :cardDragId="cardDragId"
+        :updateCardDragId="updateCardDragId"
       />
       <div>
         <CreateColumn @click="openModal" />
@@ -38,6 +40,7 @@ export default {
   data() {
     return {
       boardId: this.$route.params.id,
+      cardDragId: null,
     };
   },
   methods: {
@@ -45,6 +48,9 @@ export default {
       const boardData = { boardId: this.boardId, title };
       this.$store.dispatch("createColumn", boardData);
       this.closeModal();
+    },
+    updateCardDragId(id) {
+      this.cardDragId = id;
     },
   },
   components: {

@@ -74,5 +74,25 @@ export default {
         commit("setIsLoading", false);
       }
     },
+    async moveCard(
+      { commit, dispatch },
+      { dragId, dropId, dragColumnId, dropColumnId, side, boardId }
+    ) {
+      try {
+        commit("setIsLoading", true);
+        await cardService.moveCard({
+          dragId,
+          dropId,
+          dragColumnId,
+          dropColumnId,
+          side,
+        });
+        dispatch("getColumns", boardId);
+      } catch (error) {
+        console.log("cards error: ", error);
+      } finally {
+        commit("setIsLoading", false);
+      }
+    },
   },
 };
