@@ -26,6 +26,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch("checkCurrentUser");
+    this.$store.dispatch("getNotifications");
   },
 };
 </script>

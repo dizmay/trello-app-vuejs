@@ -3,6 +3,7 @@ import auth from "./auth";
 import boards from "./boards";
 import columns from "./columns";
 import card from "./card";
+import notifications from "./notifications";
 
 export default createStore({
   state: {
@@ -20,7 +21,7 @@ export default createStore({
       state.error = "";
     },
   },
-  modules: { auth, boards, columns, card },
+  modules: { auth, boards, columns, card, notifications },
   actions: {},
   getters: {
     isLoading: (state) => state.isLoading,

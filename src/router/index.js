@@ -4,6 +4,7 @@ import Login from "@/views/Login.vue";
 import Registration from "@/views/Registration.vue";
 import Boards from "@/views/Boards.vue";
 import Board from "@/views/Board.vue";
+import Notifications from "@/views/Notifications.vue";
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     path: "/boards/:id",
     name: "Board",
     component: Board,
+  },
+  {
+    path: "/notifications",
+    name: "Notifications",
+    component: Notifications,
   },
 ];
 
