@@ -63,6 +63,7 @@ export default {
         await boardsService.inviteUserToBoard(payload);
       } catch (error) {
         console.log("boards error: ", error);
+        commit("setError", error.response.data.message);
       } finally {
         commit("setIsLoading", false);
       }

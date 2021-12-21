@@ -11,7 +11,7 @@ export default {
         const { data } = await notificationsService.getNotifications();
         commit("setNotifications", data);
       } catch (error) {
-        console.log("cards error: ", error);
+        console.log("notifications error: ", error);
       } finally {
         commit("setIsLoading", false);
       }
@@ -22,7 +22,7 @@ export default {
         await notificationsService.replyToNotification({ invId, isAccepted });
         dispatch("getNotifications");
       } catch (error) {
-        console.log("cards error: ", error);
+        console.log("notifications error: ", error);
       } finally {
         commit("setIsLoading", false);
       }
