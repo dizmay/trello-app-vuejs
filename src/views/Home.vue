@@ -8,8 +8,8 @@
           high rises to the home office, the way your team works is unique —
           accomplish it all with Trello.
         </p>
-        <router-link to="/boards">
-          <custom-btn text="Try now" light />
+        <router-link :to="isLogged ? '/boards' : '/login'">
+          <custom-btn :text="isLogged ? 'Try now' : 'Login'" light />
         </router-link>
       </div>
       <div class="home__image">
@@ -20,7 +20,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  computed: {
+    isLogged() {
+      return this.$store.getters.isLogged;
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

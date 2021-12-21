@@ -57,7 +57,7 @@ export default {
 <style lang="scss" scoped>
 .modal {
   &__container {
-    width: 40%;
+    width: 30%;
     height: 40%;
     display: flex;
     flex-direction: column;
@@ -79,7 +79,7 @@ export default {
     width: 100%;
 
     input {
-      width: 60%;
+      width: 75%;
       font-size: 1.5rem;
       color: #fff;
       background-color: inherit;
