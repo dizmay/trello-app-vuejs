@@ -12,13 +12,8 @@ export default {
   methods: {
     async handleLogin(userData) {
       delete userData.username;
-
-      try {
-        await this.$store.dispatch("login", userData);
-        this.$router.push("/");
-      } catch (error) {
-        console.log(error);
-      }
+      this.$store.dispatch("login", userData);
+      this.$router.push("/");
     },
   },
 };

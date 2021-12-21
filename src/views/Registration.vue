@@ -13,12 +13,8 @@ export default {
   },
   methods: {
     async handleRegister(userData) {
-      try {
-        await this.$store.dispatch("register", userData);
-        this.$router.push("/");
-      } catch (error) {
-        console.log(error);
-      }
+      this.$store.dispatch("register", userData);
+      this.$router.push("/");
     },
   },
 };
