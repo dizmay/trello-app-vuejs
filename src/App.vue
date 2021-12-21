@@ -15,12 +15,20 @@ export default {
     error() {
       return this.$store.getters.error;
     },
+    notifications() {
+      return this.$store.getters.notifications;
+    },
   },
   watch: {
     error(message) {
       if (message) {
         this.$toast.error(message);
         this.$store.commit("clearError");
+      }
+    },
+    notifications(newNotifications) {
+      if (newNotifications.length) {
+        this.$toast.success("You have new notification!");
       }
     },
   },
