@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import authService from "@/services/auth";
+import { getAuthError } from "@/utils";
 
 export default {
   state: {
@@ -21,7 +22,7 @@ export default {
         authService.setAuthToken(token);
         commit("setIsLogged", true);
       } catch (error) {
-        commit("setError", error.response.data.message);
+        commit("setError", getAuthError(error.response.data));
         commit("clearUserData");
         commit("setIsLogged", false);
       } finally {
@@ -39,7 +40,7 @@ export default {
         authService.setAuthToken(token);
         commit("setIsLogged", true);
       } catch (error) {
-        commit("setError", error.response.data.message);
+        commit("setError", getAuthError(error.response.data));
         commit("clearUserData");
         commit("setIsLogged", false);
       } finally {

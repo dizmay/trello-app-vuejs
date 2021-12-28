@@ -94,5 +94,25 @@ export default {
         commit("setIsLoading", false);
       }
     },
+    async createComment(
+      { commit, dispatch, getters },
+      { text, taskId, boardId, columnId }
+    ) {
+      try {
+        commit("setIsLoading", true);
+        await cardService.createComment({
+          text,
+          userId: getters.userData.id,
+          taskId,
+          boardId,
+          columnId,
+        });
+        dispatch("getColumns", boardId);
+      } catch (error) {
+        console.log("cards error: ", error);
+      } finally {
+        commit("setIsLoading", false);
+      }
+    },
   },
 };

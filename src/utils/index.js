@@ -11,3 +11,7 @@ export const ClickOutsideDirective = {
     document.body.removeEventListener("click", el.clickOutsideEvent);
   },
 };
+
+export const getAuthError = (error) => {
+  return Object.values(error)[0];
+};

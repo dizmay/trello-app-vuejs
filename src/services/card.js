@@ -48,6 +48,16 @@ class CardService {
       side,
     });
   }
+
+  createComment({ text, userId, taskId, boardId, columnId }) {
+    return axios.post(process.env.VUE_APP_BASE_URL + "comments", {
+      text,
+      userId,
+      taskId,
+      boardId,
+      columnId,
+    });
+  }
 }
 
 export default new CardService();

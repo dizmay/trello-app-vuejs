@@ -4,7 +4,7 @@
       <div class="modal__info">
         <div class="modal__heading">
           <h1 class="modal__title">{{ title }}</h1>
-          <span class="modal__column">in list "{{ columnTitle }}"</span>
+          <span class="modal__column">in "{{ columnTitle }}" column</span>
         </div>
         <UserAssignment
           :assignedUsers="assignedUsers"
@@ -26,8 +26,9 @@
               cols="50"
               rows="3"
               placeholder="Enter your message..."
+              v-model.trim="comment"
             />
-            <icon-btn icon="paper-plane" />
+            <icon-btn icon="paper-plane" :handleClick="createComment" />
           </div>
           <div class="modal__comments__section">
             <Comment
@@ -43,8 +44,8 @@
         <h1>Menu</h1>
         <custom-btn light text="Change title" />
         <custom-btn light text="Change description" />
-        <custom-btn light text="Delete card" />
-        <custom-btn light text="Refresh info" />
+        <custom-btn light text="Delete card" :handleClick="removeCard" />
+        <custom-btn light text="Refresh info" :handleClick="refreshInfo" />
       </div>
     </div>
   </div>
@@ -55,6 +56,27 @@ import UserAssignment from "@/components/app/UserAssignment.vue";
 import Comment from "@/components/Comment.vue";
 
 export default {
+  data() {
+    return {
+      comment: "",
+    };
+  },
+  methods: {
+    createComment() {
+      if (this.comment.length) {
+        this.$store.dispatch("createComment", {
+          text: this.comment,
+          taskId: this.taskId,
+          boardId: this.boardId,
+          columnId: this.columnId,
+        });
+        this.comment = "";
+      }
+    },
+    refreshInfo() {
+      this.$store.dispatch("getColumns", this.boardId);
+    },
+  },
   props: {
     title: String,
     description: String,
@@ -66,6 +88,7 @@ export default {
     columnTitle: String,
     closeModal: Function,
     comments: Array,
+    removeCard: Function,
   },
   components: {
     UserAssignment,
@@ -89,6 +112,7 @@ export default {
   color: #fff;
   padding: 1rem;
   border-radius: 1rem;
+  cursor: default;
 
   &__backdrop {
     position: absolute;
@@ -124,6 +148,11 @@ export default {
   }
 
   &__description {
+    span {
+      font-style: italic;
+      color: #ccc;
+    }
+
     & > * {
       padding: 0.5rem 0;
     }

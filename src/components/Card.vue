@@ -35,7 +35,7 @@
     </div>
     <div
       class="card__assigned-users"
-      side="bot"
+      side="bottom"
       :id="id"
       :columnId="columnId"
       @dragenter.stop.prevent="dragEnter"
@@ -63,6 +63,7 @@
     :columnTitle="columnTitle"
     :closeModal="closeModal"
     :comments="comments"
+    :removeCard="removeCard"
   />
 </template>
 

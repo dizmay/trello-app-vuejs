@@ -13,8 +13,9 @@ export default {
   },
   methods: {
     async handleRegister(userData) {
-      this.$store.dispatch("register", userData);
-      this.$router.push("/");
+      this.$store.dispatch("register", userData).then((response) => {
+        console.log(response);
+      });
     },
   },
 };

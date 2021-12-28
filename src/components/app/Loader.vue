@@ -16,6 +16,7 @@ export default {
 
 <style lang="scss" scoped>
 .loader__backdrop {
+  z-index: 999;
   width: 100vw;
   height: 100vh;
   position: absolute;
@@ -24,6 +25,7 @@ export default {
   background-color: rgba($color: #000000, $alpha: 0.75);
 
   img {
+    z-index: inherit;
     position: absolute;
     top: 50%;
     left: 50%;
