@@ -3,7 +3,7 @@
     :id="id"
     class="column"
     draggable="true"
-    @dragstart="dragStart"
+    @dragstart.stop="dragStart"
     @dragover.prevent=""
     @dragend.stop.prevent="dragEnd"
     @dragenter.stop.prevent="dragEnter"

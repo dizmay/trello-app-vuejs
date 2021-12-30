@@ -3,7 +3,14 @@
     <div class="modal">
       <div class="modal__info">
         <div class="modal__heading">
-          <h1 class="modal__title">{{ title }}</h1>
+          <h1 v-if="!isTitleUpdate" class="modal__title">{{ title }}</h1>
+          <UpdateField
+            v-else
+            :addditionalInfo="description"
+            :submitHandler="updateCard"
+            :disableUpdate="disableTitleUpdate"
+            :initialInputValue="title"
+          />
           <span class="modal__column">in "{{ columnTitle }}" column</span>
         </div>
         <UserAssignment
@@ -15,7 +22,15 @@
         />
         <div class="modal__description">
           <h2>Description:</h2>
-          <span>{{ description }}</span>
+          <span v-if="!isDescriptionUpdate">{{ description }}</span>
+          <UpdateField
+            v-else
+            :addditionalInfo="title"
+            :submitHandler="updateCard"
+            :disableUpdate="disableDescriptionUpdate"
+            :initialInputValue="description"
+            reverse
+          />
         </div>
         <div class="modal__comments">
           <h2>Comments:</h2>
@@ -42,8 +57,12 @@
       </div>
       <div class="modal__actions">
         <h1>Menu</h1>
-        <custom-btn light text="Change title" />
-        <custom-btn light text="Change description" />
+        <custom-btn light text="Change title" :handleClick="applyTitleUpdate" />
+        <custom-btn
+          light
+          text="Change description"
+          :handleClick="applyDescriptionUpdate"
+        />
         <custom-btn light text="Delete card" :handleClick="removeCard" />
         <custom-btn light text="Refresh info" :handleClick="refreshInfo" />
       </div>
@@ -54,11 +73,14 @@
 <script>
 import UserAssignment from "@/components/app/UserAssignment.vue";
 import Comment from "@/components/Comment.vue";
+import UpdateField from "@/components/app/UpdateField.vue";
 
 export default {
   data() {
     return {
       comment: "",
+      isTitleUpdate: false,
+      isDescriptionUpdate: false,
     };
   },
   methods: {
@@ -76,6 +98,20 @@ export default {
     refreshInfo() {
       this.$store.dispatch("getColumns", this.boardId);
     },
+    applyTitleUpdate() {
+      this.isDescriptionUpdate = false;
+      this.isTitleUpdate = true;
+    },
+    applyDescriptionUpdate() {
+      this.isTitleUpdate = false;
+      this.isDescriptionUpdate = true;
+    },
+    disableTitleUpdate() {
+      this.isTitleUpdate = false;
+    },
+    disableDescriptionUpdate() {
+      this.isDescriptionUpdate = false;
+    },
   },
   props: {
     title: String,
@@ -89,10 +125,12 @@ export default {
     closeModal: Function,
     comments: Array,
     removeCard: Function,
+    updateCard: Function,
   },
   components: {
     UserAssignment,
     Comment,
+    UpdateField,
   },
 };
 </script>
@@ -181,7 +219,7 @@ export default {
     }
 
     &__section {
-      height: 25vw;
+      height: 24rem;
       overflow: auto;
     }
   }

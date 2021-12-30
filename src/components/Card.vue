@@ -64,6 +64,7 @@
     :closeModal="closeModal"
     :comments="comments"
     :removeCard="removeCard"
+    :updateCard="updateCard"
   />
 </template>
 

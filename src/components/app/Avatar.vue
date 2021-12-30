@@ -38,4 +38,11 @@ export default {
     border: 0.1rem solid #000;
   }
 }
+
+@media (max-width: 1280px) {
+  .avatar {
+    width: 2rem;
+    height: 2rem;
+  }
+}
 </style>
